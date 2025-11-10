@@ -1,0 +1,11 @@
+apiVersion: v2
+name: jenkins
+description: My wrapper for Bitnami Jenkins
+type: application
+version: 0.1.0
+appVersion: "1.0"
+
+dependencies:
+  - name: jenkins
+    version: 15.5.3
+    repository: https://charts.bitnami.com/bitnami
