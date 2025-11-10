@@ -1,16 +1,5 @@
 jenkins:
   controller:
-    ingress:
-      enabled: true
-      hostname: jenkins.localhost
-      annotations:
-        kubernetes.io/ingress.class: nginx
-        nginx.ingress.kubernetes.io/ssl-redirect: "true"
-      tls: true
-      extraTls:
-        - hosts:
-            - jenkins.localhost
-          secretName: jenkins-tls
     resources:
       requests:
         cpu: 500m
@@ -18,18 +7,55 @@ jenkins:
       limits:
         cpu: 2
         memory: 4Gi
+
+    ingress:
+      enabled: true
+      className: nginx 
+      path: /
+      hosts:
+        - jenkins.localhost
+      tls:
+        - secretName: jenkins-tls
+          hosts:
+            - jenkins.localhost
+
+    # Service
     serviceType: ClusterIP
+    servicePort: 8080
+    httpPort: 8080
+
     adminUser: admin
     adminPassword: admin 
+
     installPlugins:
       - kubernetes:latest
       - workflow-aggregator:latest
       - git:latest
+      - pipeline-stage-view:latest
+      - configuration-as-code:latest  
+
+    numExecutors: 0  
+    containerAgent:
+      enabled: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi
 
   persistence:
     enabled: true
     size: 10Gi
+    storageClass: "" 
 
   rbac:
     create: true
+  serviceAccount:
+    create: true
+    name: jenkins
+
+  hostNetworking: false
+  hostPID: false
 
