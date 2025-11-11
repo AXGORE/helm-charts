@@ -64,6 +64,12 @@ configs:
       - --application-namespaces=*
     repo-server.extraArgs:
       - --parallelism=5
+  repositories: |
+    - url: git@github.com:AXGORE/helm-charts.git
+      type: git
+      sshPrivateKeySecret:
+        name: gitops-ssh-key
+        key: ssh-privatekey
 
 # Metrics для мониторинга
 metrics:
