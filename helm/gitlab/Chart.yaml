@@ -1,0 +1,11 @@
+apiVersion: v2
+name: gitlab
+description: Local GitLab CE for Minikube (K8s 1.34)
+type: application
+version: 0.1.0
+appVersion: "17.5.0"
+
+dependencies:
+  - name: gitlab
+    version: 8.4.0  # Актуальная на ноябрь 2025
+    repository: https://charts.gitlab.io

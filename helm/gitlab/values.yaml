@@ -1,0 +1,67 @@
+# helm/gitlab/values.yaml
+global:
+  hosts:
+    domain: localhost
+    externalIP: $(minikube ip)
+  ingress:
+    enabled: true
+    className: nginx
+    configureCertmanager: false
+    tls:
+      enabled: true
+      secretName: gitlab-tls
+  edition: ce
+  rails:
+    initialRootPassword:
+      secret: gitlab-root-password
+      key: password
+
+  # Встроенные сервисы (всё локально)
+  postgresql:
+    install: true
+  redis:
+    install: true
+  minio:
+    install: true
+
+  # Отключаем внешние зависимости
+  prometheus:
+    install: false
+  grafana:
+    install: false
+
+gitlab:
+  runner:
+    install: false  # Установим отдельно
+
+webservice:
+  ingress:
+    enabled: true
+    hostname: gitlab.localhost
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+
+registry:
+  ingress:
+    enabled: true
+    hostname: registry.localhost
+
+resources:
+  requests:
+    cpu: "500m"
+    memory: "2Gi"
+  limits:
+    cpu: "2"
+    memory: "4Gi"
+
+persistence:
+  enabled: true
+  size: 20Gi
+  storageClass: ""
+
+# Безопасность
+certmanager:
+  install: false
+nginx-ingress:
+  enabled: false
+
